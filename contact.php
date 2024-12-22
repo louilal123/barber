@@ -34,6 +34,7 @@
             font-size: 1.1rem;
         }
 
+
         .contact-info h4 {
             margin-bottom: 15px;
         }
