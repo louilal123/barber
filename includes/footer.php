@@ -1,8 +1,14 @@
-   
-<!-- Footer -->
-<footer class="text-center">
+<style>
+  .footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    z-index: 10; /* Optional: Ensures the footer stays on top of other elements */
+  }
+</style>
+<footer class="text-center footer">
         <div class="container">
-            <p class="mb-0">© 2024 BBAS. All rights reserved. Developed by <a href="#">Brian Nick Acorda</a>.</p>
+            <p class="mb-0">© 2024 BBAS. All rights reserved. Developed by <a href="#">Mr. Sad and Lonely</a>.</p>
         </div>
     </footer>
 
