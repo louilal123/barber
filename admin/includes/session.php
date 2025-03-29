@@ -19,4 +19,6 @@ $admin_avatar = $_SESSION['avatar'];
 $admin_type = $_SESSION['type'];
 $admin_date_added = $_SESSION['date_added'];
 $admin_date_updated = $_SESSION['date_updated'];
+
+
 ?>

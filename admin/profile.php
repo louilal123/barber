@@ -2,10 +2,10 @@
 include 'includes/session.php';
 
 // Fetch the admin's current profile
-include 'functions/connection.php';
-$query = "SELECT id, firstname, middlename, lastname, username, avatar, last_login FROM users WHERE id = 1 LIMIT 1"; // Change id to your session id dynamically
-$result = $conn->query($query);
-$admin = $result->fetch_assoc();
+// include 'functions/connection.php';
+// $query = "SELECT id, firstname, middlename, lastname, username, avatar, last_login FROM users WHERE id = 1 LIMIT 1"; // Change id to your session id dynamically
+// $result = $conn->query($query);
+// $admin = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -40,20 +40,20 @@ $admin = $result->fetch_assoc();
                     </div>
                     <div class="col-md-12">
                     <label for="firstname" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= htmlspecialchars($admin['firstname']); ?>" required oninput="validateName(this)">
+                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= htmlspecialchars($admin['firstname']); ?>"  oninput="validateName(this)">
                     </div>
                     <div class="col-md-12">
                     <label for="middlename" class="form-label">Middle Name</label>
-                    <input type="text" class="form-control" id="middlename" name="middlename" value="<?= htmlspecialchars($admin['middlename']); ?>" required oninput="validateName(this)">
+                    <input type="text" class="form-control" id="middlename" name="middlename" value="<?= htmlspecialchars($admin['middlename']); ?>"  oninput="validateName(this)">
                     </div>
                     <div class="col-md-12">
                     <label for="lastname" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= htmlspecialchars($admin['lastname']); ?>" required oninput="validateName(this)">
+                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= htmlspecialchars($admin['lastname']); ?>"  oninput="validateName(this)">
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($admin['username']); ?>" required>
+                    <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($admin['username']); ?>" >
                 </div>
                 <div class="mb-3">
                     <label for="avatar" class="form-label">New Avatar</label>
@@ -87,17 +87,17 @@ $admin = $result->fetch_assoc();
           <!-- Current Password -->
           <div class="mb-3">
             <label for="current_password" class="form-label">Current Password</label>
-            <input type="password" class="form-control" id="current_password" name="current_password" required>
+            <input type="password" class="form-control" id="current_password" name="current_password" >
           </div>
           <!-- New Password -->
           <div class="mb-3">
             <label for="new_password" class="form-label">New Password</label>
-            <input type="password" class="form-control" id="new_password" name="new_password" required minlength="8">
+            <input type="password" class="form-control" id="new_password" name="new_password"  minlength="8">
           </div>
           <!-- Confirm New Password -->
           <div class="mb-3">
             <label for="confirm_password" class="form-label">Confirm New Password</label>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" >
           </div>
         </div>
         <div class="modal-footer">

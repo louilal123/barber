@@ -1,17 +1,15 @@
 <?php
 session_start();
-include('connection.php'); // Include your database connection file
+include('connection.php');
 
-// Check if form is submitted
 if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description']) && isset($_POST['cost']) && isset($_POST['status'])) {
-    // Get the form data
     $serviceId = $_POST['id'];
     $serviceName = trim($_POST['name']);
     $description = trim($_POST['description']);
     $cost = $_POST['cost'];
-    $status = (int) $_POST['status']; // Convert status to integer (1 or 0)
+    $status = (int)$_POST['status'];
 
-    // Validate service name and description (no numeric or special characters allowed)
+    // Validate inputs
     if (!preg_match("/^[a-zA-Z\s]+$/", $serviceName)) {
         $_SESSION['status'] = 'Service name should not contain numbers or special characters.';
         $_SESSION['status_icon'] = 'error';
@@ -26,21 +24,66 @@ if (isset($_POST['id']) && isset($_POST['name']) && isset($_POST['description'])
         exit();
     }
 
-    // Prepare the SQL statement to update the service in the database
-    $query = "UPDATE service_list SET name = ?, description = ?, cost = ?, status = ?, date_updated = NOW() WHERE id = ?";
+    // Fetch current image path to preserve old image if no new image is uploaded
+    $query = "SELECT service_img FROM service_list WHERE id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ssdis', $serviceName, $description, $cost, $status, $serviceId);
+    $stmt->bind_param('i', $serviceId);
+    $stmt->execute();
+    $stmt->bind_result($existingImage);
+    $stmt->fetch();
+    $stmt->close();
 
-    // Execute the query
+    $newImagePath = $existingImage;  // Default to the existing image
+
+    // Handle Image Upload (if new image is uploaded)
+// Handle Image Upload (if new image is uploaded)
+if (!empty($_FILES['service_img']['name'])) {
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!in_array($_FILES['service_img']['type'], $allowedTypes)) {
+        $_SESSION['status'] = 'Only JPG, PNG, and GIF files are allowed.';
+        $_SESSION['status_icon'] = 'error';
+        header("Location: ../service_list.php");
+        exit();
+    }
+
+    $imageName = time() . '_' . $_FILES['service_img']['name'];
+    $targetDirectory = "../uploads/";
+    $targetFilePath = $targetDirectory . $imageName;
+
+    // Ensure directory exists
+    if (!is_dir($targetDirectory)) {
+        mkdir($targetDirectory, 0777, true);
+    }
+
+    if (move_uploaded_file($_FILES['service_img']['tmp_name'], $targetFilePath)) {
+        if (!empty($existingImage) && file_exists("../uploads/" . $existingImage)) {
+            unlink("../uploads/" . $existingImage);
+        }
+
+        $newImagePath = $imageName;
+    } else {
+        $_SESSION['status'] = 'Failed to upload new image.';
+        $_SESSION['status_icon'] = 'error';
+        header("Location: ../service_list.php");
+        exit();
+    }
+}
+
+
+    // Update Service
+    $query = "UPDATE service_list SET name = ?, description = ?, cost = ?, status = ?, service_img = ?, date_updated = NOW() WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('ssdisi', $serviceName, $description, $cost, $status, $newImagePath, $serviceId);
+
+    // Execute query
     if ($stmt->execute()) {
         $_SESSION['status'] = 'Service updated successfully.';
         $_SESSION['status_icon'] = 'success';
     } else {
-        $_SESSION['status'] = 'Failed to update service. Please try again.';
+        $_SESSION['status'] = 'Failed to update service.';
         $_SESSION['status_icon'] = 'error';
     }
 
-    // Redirect to the service list page
     header("Location: ../service_list.php");
     exit();
 }

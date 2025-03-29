@@ -3,7 +3,7 @@
     <title>Dashboard</title>
     <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-
+  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
   <script  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="assets/css/bootstrap.css">
   <script  src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
     <script defer src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script defer src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <!-- bootstrap 5 datatables styling  -->
 
 <!-- 

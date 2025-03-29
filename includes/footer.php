@@ -1,33 +1,61 @@
-<style>
-  .footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    z-index: 10; /* Optional: Ensures the footer stays on top of other elements */
-  }
-</style>
-<footer class="text-center footer">
-        <div class="container">
-            <p class="mb-0">© 2024 BBAS. All rights reserved. Developed by <a href="#">Mr. Sad and Lonely</a>.</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3 class="footer-logo">BarberShop</h3>
+                <p class="footer-description">Premium barber services for the modern gentleman. Experience the perfect blend of traditional techniques and contemporary styles.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Home</a></li>
+                    <li class="footer-link"><a href="#">Services</a></li>
+                    <li class="footer-link"><a href="#">About Us</a></li>
+                    <li class="footer-link"><a href="#">Gallery</a></li>
+                    <li class="footer-link"><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Services</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Haircut</a></li>
+                    <li class="footer-link"><a href="#">Beard Trim</a></li>
+                    <li class="footer-link"><a href="#">Hot Towel Shave</a></li>
+                    <li class="footer-link"><a href="#">Hair Styling</a></li>
+                    <li class="footer-link"><a href="#">Kids Haircut</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Contact Us</h3>
+                <div class="footer-contact">
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <p>123 Main Street, Melbourne, Victoria, Australia</p>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <p>+61 3 1234 5678</p>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <p>info@barbershop.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 BarberShop. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script> <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
- 
-
- 
-    <script>
-        // Sidebar toggle
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('d-none');
-        });
-    </script>
-
 
 
 <?php if (isset($_SESSION['status']) && $_SESSION['status'] != '') { ?>

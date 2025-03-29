@@ -1,38 +1,44 @@
 <?php
-session_start(); // Start the session to use session variables
-include('connection.php'); // Include your database connection file
+session_start(); 
+include('connection.php'); 
 
 // Check if form is submitted
 if (isset($_POST['add_service'])) {
-    // Get the form data
     $serviceName = trim($_POST['name']);
     $description = trim($_POST['description']);
     $cost = $_POST['cost'];
-    $status = (int) $_POST['status']; // Directly cast the status to an integer (1 or 0)
+    $status = (int)$_POST['status'];
 
+    // Image Upload Logic
+    $targetDir = "../uploads/";
+    $imageName = basename($_FILES['service_img']['name']);
+    $imagePath = $targetDir . $imageName;
 
-    // Validate service name and description (no numeric or special characters allowed)
-    if (!preg_match("/^[a-zA-Z\s]+$/", $serviceName)) {
-        $_SESSION['status'] = 'Service name should not contain numbers or special characters.';
+    // Check for valid image types
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+    $imageType = $_FILES['service_img']['type'];
+
+    if (!in_array($imageType, $allowedTypes)) {
+        $_SESSION['status'] = 'Invalid image format. Only JPG, PNG, and GIF are allowed.';
         $_SESSION['status_icon'] = 'error';
         header("Location: ../service_list.php");
         exit();
     }
 
-    if (!preg_match("/^[a-zA-Z\s]+$/", $description)) {
-        $_SESSION['status'] = 'Description should not contain numbers or special characters.';
+    // Move uploaded image to the uploads directory
+    if (!move_uploaded_file($_FILES['service_img']['tmp_name'], $imagePath)) {
+        $_SESSION['status'] = 'Failed to upload image. Please try again.';
         $_SESSION['status_icon'] = 'error';
         header("Location: ../service_list.php");
         exit();
     }
 
-    // Prepare the SQL statement to insert the service into the database
-    $query = "INSERT INTO service_list (name, description, cost, status, date_created, date_updated) 
-              VALUES (?, ?, ?, ?, NOW(), NOW())";
+    // Insert service data with image path into the database
+    $query = "INSERT INTO service_list (name, description, service_img, cost, status, date_created, date_updated) 
+              VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ssdi', $serviceName, $description, $cost, $status);
+    $stmt->bind_param('sssdi', $serviceName, $description, $imageName, $cost, $status);
 
-    // Execute the query
     if ($stmt->execute()) {
         $_SESSION['status'] = 'Service added successfully.';
         $_SESSION['status_icon'] = 'success';
@@ -41,7 +47,6 @@ if (isset($_POST['add_service'])) {
         $_SESSION['status_icon'] = 'error';
     }
 
-    // Redirect to the page with the modal
     header("Location: ../service_list.php");
     exit();
 }

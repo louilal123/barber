@@ -37,6 +37,7 @@ include 'includes/session.php';
       <th>Service Name</th>
       <th>Description</th>
       <th>Cost</th>
+      <th>Image</th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
@@ -56,12 +57,17 @@ include 'includes/session.php';
           <td><?php echo htmlspecialchars($service['description'], ENT_QUOTES, 'UTF-8'); ?></td>
           <td><?php echo number_format($service['cost'], 2); ?></td>
           <td>
-  <?php if ($service['status'] == 1): ?>
-    <span class="badge bg-success">Active</span>
-  <?php else: ?>
-    <span class="badge bg-secondary">Inactive</span>
-  <?php endif; ?>
-</td>
+            <img src="<?php echo 'uploads/' . htmlspecialchars($service['service_img'], ENT_QUOTES, 'UTF-8'); ?>" 
+                 style="height: 200px; width: 200px; margin:auto;" 
+                 alt="Service Image">
+          </td>
+          <td>
+            <?php if ($service['status'] == 1): ?>
+              <span class="badge bg-success">Active</span>
+            <?php else: ?>
+              <span class="badge bg-secondary">Inactive</span>
+            <?php endif; ?>
+          </td>
 
           <td>
             <button 
@@ -73,7 +79,8 @@ include 'includes/session.php';
               data-name="<?php echo htmlspecialchars($service['name'], ENT_QUOTES, 'UTF-8'); ?>"
               data-description="<?php echo htmlspecialchars($service['description'], ENT_QUOTES, 'UTF-8'); ?>"
               data-cost="<?php echo $service['cost']; ?>"
-              data-status="<?php echo $service['status']; ?>">
+              data-status="<?php echo $service['status']; ?>"
+              data-image="<?php echo 'uploads/' . htmlspecialchars($service['service_img'], ENT_QUOTES, 'UTF-8'); ?>">
               Edit
             </button>
 
@@ -91,6 +98,7 @@ include 'includes/session.php';
   </tbody>
 </table>
 
+
               </div>
             </div>
           </div>
@@ -102,15 +110,16 @@ include 'includes/session.php';
   <?php include "includes/footer.php" ?>
 
   <!-- Modal for Adding New Service -->
+<!-- Modal for Adding New Service -->
 <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addServiceModalLabel">Add New Service</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="functions/add_service.php">
+        <form method="POST" action="functions/add_service.php" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="serviceName" class="form-label">Service Name</label>
             <input type="text" class="form-control" id="serviceName" name="name" required oninput="validateServiceName('serviceName')">
@@ -130,6 +139,10 @@ include 'includes/session.php';
               <option value="0">Inactive</option>
             </select>
           </div>
+          <div class="mb-3">
+            <label for="serviceImage" class="form-label">Service Image</label>
+            <input type="file" class="form-control" id="serviceImage" name="service_img" accept="image/*" required>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" name="add_service" class="btn btn-primary">Save</button>
@@ -141,41 +154,60 @@ include 'includes/session.php';
 </div>
 
 
+
 <!-- Modal for Editing Service -->
 <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editServiceModalLabel">Edit Service</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="functions/edit_service.php">
-          <input type="hidden" id="editServiceId" name="id">
-          <div class="mb-3">
-            <label for="editServiceName" class="form-label">Service Name</label>
-            <input type="text" class="form-control" id="editServiceName" name="name" required oninput="validateServiceName('editServiceName')">
-          </div>
-          <div class="mb-3">
-            <label for="editDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="editDescription" name="description" required oninput="validateDescription('editDescription')"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="editCost" class="form-label">Cost</label>
-            <input type="number" class="form-control" id="editCost" name="cost" required>
-          </div>
-          <div class="mb-3">
-            <label for="editStatus" class="form-label">Status</label>
-            <select class="form-select" id="editStatus" name="status" required>
-              <option value="1">Active</option>
-              <option value="0">Inactive</option>
-            </select>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Update</button>
-          </div>
-        </form>
+      <form method="POST" action="functions/edit_service.php" enctype="multipart/form-data">
+
+    <input type="hidden" id="editServiceId" name="id">
+
+    <div class="mb-3">
+        <label for="editServiceImage" class="form-label">Current Service Image</label>
+        <img id="currentServiceImage" src="" alt="Service Image" class="img-fluid mb-2" 
+             style="max-width: 150px; border: 1px solid #ddd;">
+    </div>
+
+    <div class="mb-3">
+        <label for="editServiceName" class="form-label">Service Name</label>
+        <input type="text" class="form-control" id="editServiceName" name="name" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="editDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="editDescription" name="description" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="editCost" class="form-label">Cost</label>
+        <input type="number" class="form-control" id="editCost" name="cost" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="editStatus" class="form-label">Status</label>
+        <select class="form-select" id="editStatus" name="status" required>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="editServiceImage" class="form-label">New Service Image</label>
+        <input type="file" class="form-control" id="editServiceImage" name="service_img">
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+
       </div>
     </div>
   </div>
@@ -240,6 +272,29 @@ include 'includes/session.php';
         });
       });
     });
+  </script>
+  <script>
+    document.getElementById('editServiceImage').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('currentServiceImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+  </script>
+  <script>
+    document.querySelectorAll('.editServiceBtn').forEach(button => {
+    button.addEventListener('click', function () {
+        const imagePath = this.getAttribute('data-image');
+        const imageElement = document.getElementById('currentServiceImage');
+        imageElement.src = imagePath ? imagePath : 'uploads/default-image.jpg';  // Default image if none available
+    });
+});
+
   </script>
 
 </body>

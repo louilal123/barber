@@ -254,8 +254,6 @@ document.getElementById('appointment-form').addEventListener('submit', function(
     });
 </script>
 
-<?php include "includes/footer.php";?>
-
 
 </body>
 </html>

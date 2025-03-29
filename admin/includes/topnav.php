@@ -156,6 +156,14 @@
     }
 
     </style>
+    <?php
+
+// Fetch the admin's current profile
+include 'functions/connection.php';
+$query = "SELECT id, firstname, middlename, lastname, username, avatar, last_login FROM users WHERE id = 1 LIMIT 1"; // Change id to your session id dynamically
+$result = $conn->query($query);
+$admin = $result->fetch_assoc();
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100" style="width: 100% !important;">
     <div class="container-fluid" style="width: 100% !important;">
         <button class="btn me-3" id="sidebarToggle"><i class="fas fa-bars text-light"></i></button>
@@ -167,7 +175,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="uploads/<?php echo htmlspecialchars($admin_avatar); ?>" 
+                    <img src="uploads/<?= htmlspecialchars($admin['avatar']); ?>" 
                              alt="Profile" 
                              class="rounded-circle" 
                              style="width: 40px; height: 40px;">
@@ -179,10 +187,10 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                         <h6>
-    <?php 
-    echo htmlspecialchars($admin_firstname . ' ' . $admin_middlename . ' ' . $admin_lastname); 
-    ?>
-</h6>
+                            <?php 
+                            echo htmlspecialchars($admin_firstname . ' ' . $admin_middlename . ' ' . $admin_lastname); 
+                            ?>
+                        </h6>
 
                         </li>
                         <li>
@@ -209,7 +217,6 @@
         </div>
     </div>
 </nav>
-
 
         <script>
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
