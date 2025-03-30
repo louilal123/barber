@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="logo">
         <img src="admin/uploads/logo.jpg" alt="BarberShop Logo">
-        <span>BarberShop</span>
+        <span>COOL CUTS</span>
     </div>
     <div class="nav-links">
         <a href="index" class="nav-link">Home</a>

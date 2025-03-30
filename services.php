@@ -87,6 +87,38 @@ $result = $conn->query($sql);
 </div>
 
 
+<!-- Modal Structure -->
+<div id="serviceModal" class="modal fade" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="modalTitle" class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Service Image" class="img-fluid mb-3">
+                <p id="modalDescription"></p>
+                <p id="modalPrice" class="fw-bold text-primary"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openModal(title, description, image, price) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('modalImage').src = image;
+        document.getElementById('modalPrice').textContent = price;
+
+        // Show the modal using Bootstrap's JavaScript API
+        new bootstrap.Modal(document.getElementById('serviceModal')).show();
+    }
+</script>
+
+
     <!-- Add this JavaScript to the bottom of your page before the closing body tag -->
     <script>
         // Services animations
